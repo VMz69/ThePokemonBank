@@ -191,7 +191,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btnSalir").addEventListener("click", () => {
     datosCliente.login = false;
     localStorage.setItem("usuario", JSON.stringify(datosCliente));
-    location.href = "/";
+    location.href = "index.html";
   });
 
   document.getElementById("btnCompartir").addEventListener("click", () => {

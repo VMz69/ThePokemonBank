@@ -373,7 +373,7 @@ document.getElementById("btnSalir").addEventListener("click", () => {
   const usuario = JSON.parse(localStorage.getItem("usuario"));
   usuario.login = false;
   localStorage.setItem("usuario", JSON.stringify(usuario));
-  location.href = "/";
+  location.href = "index.html";
 });
 </script>
 
