@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
   btnCerrarSesion.addEventListener("click", () => {
     datosCliente.login = false;
     localStorage.setItem("usuario", JSON.stringify(datosCliente));
-    location.href = "./";
+    location.href = "./index.html";
   });
 
 });
