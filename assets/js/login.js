@@ -14,14 +14,20 @@ function mostrarLoader() {
 document.addEventListener("DOMContentLoaded", function () {
 
   /**************************************************
-   * 🔁 RESET CONTROLADO (solo para pruebas/demo)
-   * Poner en true si quieres forzar que el usuario
-   * vuelva a estar "deslogueado"
+   * 🎥 CONFIGURACIÓN DE DEMO
+   **************************************************/
+  const DEMO_MODE = true; // false cuando ya no quieras auto-login
+  const DEMO_SESSION_KEY = "demo_autologin_done"; 
+  // ↑ Vive solo mientras la pestaña esté abierta
+
+  /**************************************************
+   * 🔁 RESET CONTROLADO (solo para pruebas internas)
    **************************************************/
   const RESET_DEMO = false;
 
   if (RESET_DEMO) {
-    localStorage.removeItem("usuario"); 
+    localStorage.removeItem("usuario");
+    sessionStorage.removeItem(DEMO_SESSION_KEY);
   }
 
   /**************************************************
@@ -45,13 +51,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const usuarioGuardado = JSON.parse(datos);
 
   /**************************************************
-   * 🔥 AUTO LOGIN DEMO
+   * 🔥 AUTO LOGIN DEMO (estable)
    **************************************************/
-  const DEMO_MODE = true; // ← false cuando ya no quieras demo
+  if (DEMO_MODE && !sessionStorage.getItem(DEMO_SESSION_KEY)) {
 
-  if (DEMO_MODE && !usuarioGuardado.login) {
+    // Marca que en esta pestaña ya se ejecutó la demo
+    sessionStorage.setItem(DEMO_SESSION_KEY, "true");
 
-    // ⏳ 1) Deja visible el login unos segundos
+    // ⏳ 1) Tiempo para que se vea el login
     setTimeout(() => {
 
       // 🔄 2) Muestra loader ("Iniciando sesión...")
@@ -66,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       }, 1200); // tiempo mostrando loader
 
-    }, 1600); // tiempo mostrando login
+    }, 1500); // tiempo mostrando login
 
     return; // ⛔ evita que se active el login manual
   }
