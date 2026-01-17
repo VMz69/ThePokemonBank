@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // valores por defecto
-  
+
   let usuario = {
     cuenta: '0987654321',
     nombre: "Ash Ketchum",
@@ -9,11 +8,34 @@ document.addEventListener("DOMContentLoaded", function () {
     login: false,
   };
 
-if (!localStorage.getItem("usuario")) {
+  if (!localStorage.getItem("usuario")) {
     localStorage.setItem("usuario", JSON.stringify(usuario));
-}
+  }
+
   const datos = localStorage.getItem("usuario");
   const usuarioGuardado = JSON.parse(datos);
+
+  // ======================
+  // 🔥 AUTO LOGIN DEMO
+  // ======================
+
+  const DEMO_MODE = true; // ← cuando no quieras demo lo pones en false
+
+  if (DEMO_MODE && !usuarioGuardado.login) {
+    mostrarLoader(); // 👈 aparece loader
+
+    setTimeout(() => {
+      usuarioGuardado.login = true;
+      localStorage.setItem("usuario", JSON.stringify(usuarioGuardado));
+      location.href = "panel.html";
+    }, 1500); // 1.5 segundos (efecto realista)
+
+    return; // 👈 corta el resto del código
+  }
+
+  // ======================
+  // LOGIN NORMAL
+  // ======================
 
   let inputPin = document.getElementById("pin");
   let inputUsuario = document.getElementById("usuario");
@@ -21,6 +43,7 @@ if (!localStorage.getItem("usuario")) {
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
+
     if (inputPin.value.trim().length == 0 || inputUsuario.value.trim().length == 0) {
       Swal.fire({
         title: "Rellena los campos",
@@ -28,7 +51,12 @@ if (!localStorage.getItem("usuario")) {
         icon: "warning",
       });
       return;
-    } else if (inputUsuario.value.trim() !== usuarioGuardado.nombre || parseInt(inputPin.value.trim()) !== usuarioGuardado.pin) {
+    }
+
+    else if (
+      inputUsuario.value.trim() !== usuarioGuardado.nombre ||
+      parseInt(inputPin.value.trim()) !== usuarioGuardado.pin
+    ) {
       Swal.fire({
         title: "Usuario o pin no valido",
         text: "Verifica haber ingresado el usuario o pin correcto",
@@ -39,6 +67,10 @@ if (!localStorage.getItem("usuario")) {
 
     usuarioGuardado.login = true;
     localStorage.setItem("usuario", JSON.stringify(usuarioGuardado));
-    location.href = "panel.html"
+    location.href = "panel.html";
   });
 });
+
+function mostrarLoader() {
+  document.getElementById("loader").classList.remove("hidden");
+}
